@@ -14,6 +14,16 @@ export function Footer() {
             nbr.gov.bd
           </a>
         </p>
+        <p className="footer__official">
+          GitHub repository:{' '}
+          <a
+            href="https://github.com/niranyousuf/tin_audit_list"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            github.com/niranyousuf/tin_audit_list
+          </a>
+        </p>
       </div>
 
       <div className="footer__credit">
