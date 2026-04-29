@@ -12,6 +12,23 @@ import {
 } from "recharts";
 import tinData from "../../../public/tins.json";
 
+// Typed JSON data shape
+type TinEntry = {
+	tin: string;
+	zone: string;
+	circle: string;
+	submissionType: string;
+};
+
+// Typed bar shape props to avoid explicit any
+type BarShapeProps = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+	index: number;
+};
+
 // Add rank number and shorten long zone names for axis readability
 const shortenZone = (zone: string, index: number): string => {
 	const name = zone
@@ -44,29 +61,50 @@ const CustomTooltip = ({
 	return null;
 };
 
+// Custom Y axis tick — left-aligned zone labels
+const CustomYAxisTick = (props: {
+	x?: number;
+	y?: number;
+	payload?: { value: string };
+}) => {
+	const { x = 0, y = 0, payload } = props;
+	return (
+		<text
+			x={x - 165}
+			y={y}
+			dy={4}
+			textAnchor="start"
+			fontSize={12}
+			fill="#374151"
+		>
+			{payload?.value}
+		</text>
+	);
+};
+
 export default function StatsSection() {
+	const typedTinData = tinData as TinEntry[];
+
 	// Group TIN entries by zone, count occurrences, sort highest first
 	const zoneData = useMemo(() => {
 		const counts: Record<string, number> = {};
-		(
-			tinData as {
-				tin: string;
-				zone: string;
-				circle: string;
-				submissionType: string;
-			}[]
-		).forEach((item) => {
+		typedTinData.forEach((item) => {
 			counts[item.zone] = (counts[item.zone] || 0) + 1;
 		});
 
 		return Object.entries(counts)
 			.map(([zone, count]) => ({ fullName: zone, count }))
 			.sort((a, b) => b.count - a.count)
+			.filter(
+				(item, index, self) =>
+					// Remove any duplicate zone entries
+					index === self.findIndex((t) => t.fullName === item.fullName)
+			)
 			.map((item, index) => ({
 				...item,
 				name: shortenZone(item.fullName, index),
 			}));
-	}, []);
+	}, [typedTinData]);
 
 	return (
 		<section className="stats-section">
@@ -74,7 +112,7 @@ export default function StatsSection() {
 				<h2 className="stats-title">Audit Selection by Zone</h2>
 				<p className="stats-subtitle">
 					NBR AY 2023–24 · Risk-Based ·{" "}
-					{tinData.length.toLocaleString()} total returns
+					{typedTinData.length.toLocaleString()} total returns
 				</p>
 			</div>
 
@@ -93,7 +131,7 @@ export default function StatsSection() {
 						/>
 						<XAxis
 							type="number"
-							tickFormatter={(v) => v.toLocaleString()}
+							tickFormatter={(v: number) => v.toLocaleString()}
 							tick={{ fontSize: 12, fill: "#6b7280" }}
 							axisLine={false}
 							tickLine={false}
@@ -102,21 +140,7 @@ export default function StatsSection() {
 							type="category"
 							dataKey="name"
 							width={165}
-							tick={(props) => {
-								const { x, y, payload } = props;
-								return (
-									<text
-										x={x - 165}
-										y={y}
-										dy={4}
-										textAnchor="start"
-										fontSize={12}
-										fill="#374151"
-									>
-										{payload.value}
-									</text>
-								);
-							}}
+							tick={<CustomYAxisTick />}
 							axisLine={false}
 							tickLine={false}
 						/>
@@ -128,7 +152,7 @@ export default function StatsSection() {
 							dataKey="count"
 							radius={[0, 4, 4, 0]}
 							maxBarSize={16}
-							shape={(props: any) => {
+							shape={(props: BarShapeProps) => {
 								const { x, y, width, height, index } = props;
 								// Gradually reduce opacity for lower-ranked zones
 								const opacity =
