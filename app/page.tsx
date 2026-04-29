@@ -8,6 +8,10 @@ import { InfoSection } from './components/home/InfoSection';
 import { ResultSection } from './components/home/ResultSection';
 import { SearchSection } from './components/home/SearchSection';
 import { ResultState, TinRecord } from './components/home/types';
+import dynamic from "next/dynamic";
+const StatsSection = dynamic(() => import("./components/home/StatsSection"), {
+  ssr: false, // disable server-side rendering for recharts
+});
 
 // TIN validation: must be exactly 12 digits
 function isValidTIN(tin: string): boolean {
@@ -69,6 +73,7 @@ export default function Home() {
         }}
       />
       <ResultSection result={result} tin={tin} match={match} />
+      <StatsSection />
       <InfoSection />
       <Footer />
 

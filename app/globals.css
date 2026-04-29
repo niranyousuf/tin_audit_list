@@ -38,8 +38,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-
-
 /* ── Layout ── */
 .main {
   min-height: 100vh;
@@ -406,5 +404,65 @@ body {
 
   .info__stats {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ── StatsSection ── */
+.stats-section {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto 3rem;
+  padding: 0;
+}
+
+.stats-header {
+  margin-bottom: 1.5rem;
+}
+
+.stats-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.25rem;
+}
+
+.stats-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.stats-chart-wrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem 1rem 1rem;
+}
+
+.stats-tooltip {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+}
+
+.stats-tooltip-zone {
+  font-size: 0.8rem;
+  color: #d1d5db;
+  margin: 0 0 0.2rem;
+}
+
+.stats-tooltip-count {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .stats-chart-wrapper {
+    padding: 1rem 0.25rem 0.75rem;
+  }
+  .stats-title {
+    font-size: 1.1rem;
   }
 }
