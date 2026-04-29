@@ -53,10 +53,10 @@ export default function Home() {
   return (
     <main className="main">
       <Header />
-      <InfoSection />
       <p className="hero__badge" aria-label="Data source: Official NBR data, 72,196 returns">
         ● Official NBR data · 72,196 returns
       </p>
+      <Hero />
       <SearchSection
         tin={tin}
         result={result}
@@ -69,7 +69,7 @@ export default function Home() {
         }}
       />
       <ResultSection result={result} tin={tin} match={match} />
-      <Hero />
+      <InfoSection />
       <Footer />
 
     </main>

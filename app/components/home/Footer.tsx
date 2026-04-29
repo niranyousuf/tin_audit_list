@@ -4,7 +4,7 @@ export function Footer() {
       <div className="footer__disclaimer">
         <p>
           <strong>Disclaimer:</strong> This is an independent tool using publicly available NBR
-          data. We are not affiliated with the National Board of Revenue or any government body.
+          data. I am not affiliated with the National Board of Revenue or any government body.
           Always verify your audit status directly with NBR or your tax circle before taking any
           action.
         </p>
