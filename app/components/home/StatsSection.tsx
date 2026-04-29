@@ -63,11 +63,13 @@ const CustomTooltip = ({
 
 // Custom Y axis tick — left-aligned zone labels
 const CustomYAxisTick = (props: {
-	x?: number;
-	y?: number;
+	x?: number | string;
+	y?: number | string;
 	payload?: { value: string };
 }) => {
-	const { x = 0, y = 0, payload } = props;
+	const x = Number(props.x ?? 0);
+	const y = Number(props.y ?? 0);
+	const { payload } = props;
 	return (
 		<text
 			x={x - 165}
